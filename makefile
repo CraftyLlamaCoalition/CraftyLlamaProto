@@ -15,4 +15,4 @@ generated_dir:
 	@mkdir -p $(OUT_DIR)
 
 clean: 
-	rm -rf generated
+	rm -rf $(OUT_DIR)
