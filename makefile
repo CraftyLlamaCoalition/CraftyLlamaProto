@@ -5,7 +5,7 @@ all: go python
 
 go: generated_dir
 	@mkdir -p $(OUT_DIR)/go && \
-	protoc --go_out=$(OUT_DIR)/go/. --go-grpc_out=$(OUT_DIR)/go/. ./GatewayService.proto
+	protoc --go_out=$(OUT_DIR)/go/. --go_opt=paths=source_relative  --go-grpc_out=$(OUT_DIR)/go/. --go-grpc_opt=paths=source_relative  ./GatewayService.proto
 
 python: generated_dir
 	@mkdir -p $(OUT_DIR)/python && \
