@@ -1,0 +1,51 @@
+
+name: gRPC Protobuf Distribute
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.20' # Specify the Go version
+
+    - name: Install protobuf compiler
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y protobuf-compiler
+
+    - name: Compile protobuf for Go
+      run: make go
+    
+    - uses: whyakari/github-repo-action@v3.1
+      with:
+        owner: CraftyLlamaCoalition
+        repository: CraftyLlamaProto-Go
+        access-token: "${{ secrets.GITHUB_TOKEN }}"
+        branch: main
+        
+    - run: cp generated/* CraftyLlamaProto-Go
+    - name: Commit and push changes
+      run: |
+        cd CraftyLlamaProto-Go
+        git config --global user.email "craftyllama.ai@gmail.com"
+        git config --global user.name "That Crafty Llama"
+        git add .
+        git commit -m "Compile protobuf files"
+        git push origin main # Replace branch-name with the desired branch
+    - run: ls -al
