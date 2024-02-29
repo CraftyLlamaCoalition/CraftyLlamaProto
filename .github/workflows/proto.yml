@@ -53,4 +53,6 @@ jobs:
         git add .
         git commit -m "Compile protobuf files"
         git push origin main # Replace branch-name with the desired branch
+      env: 
+         GITHUB_TOKEN: ${{ secrets.ORG_PAT_LARSON }}
     - run: ls -al
