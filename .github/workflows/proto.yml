@@ -51,7 +51,7 @@ jobs:
         git config --global user.email "craftyllama.ai@gmail.com"
         git config --global user.name "That Crafty Llama"
         git add .
-        git remote set-url origin https://${{ github.actor }}:${{ secrets.ORG_PAT_LARSON }}@github.com/CraftyLlamaCoalition/CraftyLlamaProto-Go.git
+        git remote set-url origin https://nlarson2:${{ secrets.ORG_PAT_LARSON }}@github.com/CraftyLlamaCoalition/CraftyLlamaProto-Go.git
         git config --list
         pwd
         git commit -m "Compile protobuf files"
