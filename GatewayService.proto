@@ -11,6 +11,10 @@ message TestResponse {
     string body = 1;
 }
 
+message NewAdditionBuildTest {
+    string body = 1;
+}
+
 service TestMessageService {
     rpc TestMessage(TestSendMessage) returns (TestResponse);
 }
