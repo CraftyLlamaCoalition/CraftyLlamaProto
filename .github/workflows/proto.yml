@@ -51,6 +51,8 @@ jobs:
         git config --global user.email "craftyllama.ai@gmail.com"
         git config --global user.name "That Crafty Llama"
         git add .
+        git config --list
+        pwd
         git commit -m "Compile protobuf files"
         git push origin main # Replace branch-name with the desired branch
       env: 
