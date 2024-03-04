@@ -3,10 +3,7 @@ name: gRPC Protobuf Distribute
 on: 
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - temp
       
 jobs:
   build:
