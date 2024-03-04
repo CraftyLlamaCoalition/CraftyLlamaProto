@@ -3,7 +3,7 @@ name: gRPC Protobuf Distribute
 on: 
   push:
     branches:
-      - temp
+      - test/*
       
 jobs:
   build:
@@ -19,40 +19,40 @@ jobs:
     - name: Setup Go
       uses: actions/setup-go@v2
       with:
-        go-version: '1.20' # Specify the Go version
+        go-version: '1.22' # Specify the Go version
+        
+    - name: Setup Python 
+      uses: actions/setup-python@v5.0.0
+      with:
+        python-version: '3.10'
 
     - name: Install protobuf compiler
       run: |
         sudo apt-get update
         sudo apt-get install -y protobuf-compiler
-
-    - name: go gprc stuff
+        
+    - name: Install gRPC Requirements
       run: |
         go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
         go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+        python -m pip install --upgrade pip
+        python -m pip install grpcio grpcio-tools
+      
+    - name: Compile gRPC
+      run: make all
+
+    - name: Commit gRPC code to Proto-Go
+      uses: CraftyLlamaCoalition/compile-grpc-action@main
+      with: 
+        language: go
+        out_repo: CraftyLlamaProto-Go
+        token: ${{ secrets.ORG_PAT_LARSON }}
         
-    - name: Compile protobuf for Go
-      run: make go
-    
-    - uses: whyakari/github-repo-action@v3.1
-      with:
-        owner: CraftyLlamaCoalition
-        repository: CraftyLlamaProto-Go
-        access-token: "${{ secrets.GITHUB_TOKEN }}"
-        branch: main
-        
-    - run: cp generated/* CraftyLlamaProto-Go
-    - name: Commit and push changes
-      run: |
-        cd CraftyLlamaProto-Go
-        git config --global user.email "craftyllama.ai@gmail.com"
-        git config --global user.name "That Crafty Llama"
-        git add .
-        git remote set-url origin https://nlarson2:${{ secrets.ORG_PAT_LARSON }}@github.com/CraftyLlamaCoalition/CraftyLlamaProto-Go.git
-        git config --list
-        pwd
-        git commit -m "Compile protobuf files"
-        git push origin main # Replace branch-name with the desired branch
-      env: 
-         GITHUB_TOKEN: ${{ secrets.ORG_PAT_LARSON }}
-    - run: ls -al
+    - name: Commit gRPC code to Proto-Python
+      uses: CraftyLlamaCoalition/compile-grpc-action@main
+      with: 
+        language: python
+        out_repo: CraftyLlamaProto-Python
+        token: ${{ secrets.ORG_PAT_LARSON }}
+          
+  
