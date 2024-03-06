@@ -1,0 +1,38 @@
+syntax = "proto3";
+package crianotes;
+
+option go_package = "./craftyllamaprotos";
+
+message NewNoteRequest {
+    string user_id = 1;
+    string content = 2;
+}
+
+message NoteRequest {
+    string user_id = 1;
+    string note_id = 2;
+}
+
+message NoteContent {
+    string content = 1;
+}
+
+message MultipleNotes {
+    repeated NoteContent notes = 1;
+}
+
+message User {
+    string user_id = 1;
+}
+
+message Status {
+    bool success = 1;
+}
+
+
+service CriaNotesService {
+    rpc AddNote(NewNoteRequest) returns (Status);
+    rpc DeleteNote(NoteRequest) returns (Status);
+    rpc GetNote(NoteRequest) returns (NoteContent);
+    rpc GetAllNotes(User) returns (MultipleNotes);
+}
