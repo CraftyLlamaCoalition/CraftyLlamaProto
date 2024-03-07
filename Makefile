@@ -1,18 +1,22 @@
 
-OUT_DIR = generated
+OUT_DIR = ./generated
 SERVICE_NAME = CriaNotesService.proto
+PROTO_FILES := $(wildcard *.proto)
+PROTO_BASENAMES := $(subst .proto,,$(PROTO_FILES))
+
 all: go python
 
-go: generated_dir
-	@mkdir -p $(OUT_DIR)/go && \
-	protoc --go_out=$(OUT_DIR)/go/. --go_opt=paths=source_relative  --go-grpc_out=$(OUT_DIR)/go/. --go-grpc_opt=paths=source_relative  ./$(SERVICE_NAME)
+go: $(addprefix $(OUT_DIR)/go/,$(PROTO_BASENAMES))
+python:  $(addprefix $(OUT_DIR)/python/,$(PROTO_BASENAMES))
+  
 
-python: generated_dir
-	@mkdir -p $(OUT_DIR)/python && \
-	python3 -m grpc_tools.protoc -I./ --python_out=$(OUT_DIR)/python/. --pyi_out=$(OUT_DIR)/python/. --grpc_python_out=$(OUT_DIR)/python/. ./$(SERVICE_NAME)
+$(OUT_DIR)/go/%: %.proto
+	@mkdir -p $@
+	protoc --go_out=$@ --go_opt=paths=source_relative  --go-grpc_out=$@ --go-grpc_opt=paths=source_relative  $<
 
-generated_dir:
-	@mkdir -p $(OUT_DIR)
+$(OUT_DIR)/python/%: %.proto
+	@mkdir -p $@
+	python3 -m grpc_tools.protoc -I./ --python_out=$@ --pyi_out=$@ --grpc_python_out=$@ $<
 
 clean: 
 	rm -rf $(OUT_DIR)

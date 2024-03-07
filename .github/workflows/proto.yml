@@ -45,14 +45,14 @@ jobs:
       uses: CraftyLlamaCoalition/compile-grpc-action@main
       with: 
         language: go
-        out_repo: CraftyLlamaProto-Go
+        out_repo: CraftyLlamaProtoGo
         token: ${{ secrets.ORG_PAT_LARSON }}
         
     - name: Commit gRPC code to Proto-Python
       uses: CraftyLlamaCoalition/compile-grpc-action@main
       with: 
         language: python
-        out_repo: CraftyLlamaProto-Python
+        out_repo: CraftyLlamaProtoPython
         token: ${{ secrets.ORG_PAT_LARSON }}
           
   
